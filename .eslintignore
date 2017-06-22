@@ -1,0 +1,5 @@
+*/node_modules/*
+/public/build/*
+/public/libs/*
+node_modules
+webpack.config.js

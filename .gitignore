@@ -1,0 +1,13 @@
+# Database directories
+data
+
+#env file
+env.js
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm
+
+public/build

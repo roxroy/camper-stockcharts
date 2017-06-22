@@ -1,0 +1,31 @@
+header {
+	padding-bottom: 20px;
+}
+
+.axis path {
+	fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}
+
+
+/*
+body {
+  margin : 20px auto;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.backdrop {
+  padding : 30px;
+  background-color: #eee;
+}
+
+a {
+  color: #00B7FF;
+}
+
+*/

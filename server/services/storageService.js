@@ -2,7 +2,7 @@ let Stock = require('../models/stock');
 
 function addNew(stockData){
 	let newStcok = Stock({
-	  name: stockData.name,
+	  symbol: stockData.symbol,
 	  description: stockData.description,
 	  tradeDates: stockData.tradeDates,
 	  tradeHistory: stockData.tradeHistory,
@@ -10,7 +10,7 @@ function addNew(stockData){
 
 	newStcok.save(function(err, resource) {
 	  if (err) throw err;
-	  console.log('Stock created!');
+	  console.log('Stock created!', stockData.symbol);
 	});
 };
 

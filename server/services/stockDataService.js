@@ -4,8 +4,7 @@ const storageService = require('./storageService');
 function getData(params) {
   return new Promise((resolve, reject) => {
 
-    const path = `/api/v3/datasets/WIKI/${params.symbol}.json?\
-    start_date=${params.startDate}&end_date=${params.endDate}&order=asc`;
+    const path = `/api/v3/datasets/WIKI/${params.symbol}.json?start_date=${params.startDate}&end_date=${params.endDate}&order=asc`;
     const options = {
       host: 'www.quandl.com',
       path: path,
@@ -28,13 +27,14 @@ function getData(params) {
 function getParsedFields(json) {
   const symbol = json.dataset.dataset_code,
       description = json.dataset.name,
-      tradeDates: {
+      tradeDates = {
         startDate : json.dataset.start_date,
         endDate : json.dataset.end_date,
       },
       tradeHistory = json.dataset.data.map( (item) =>{
         return { date: item[0], open: item[1]};
       });
+  console.log('getParsedFields', symbol, description, tradeDates, tradeHistory);
   return { symbol, description, tradeDates, tradeHistory };
 }
 

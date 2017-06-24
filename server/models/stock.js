@@ -7,7 +7,7 @@ const stockSchema = new Schema({
   tradeDates: {
     startDate : Date,
     endDate : Date
-  }
+  },
   tradeHistory: [],
 });
 

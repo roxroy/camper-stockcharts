@@ -1,4 +1,6 @@
-//import charting from './charting';
+const chartingService = require("./chartingService");
+
+let seriesData = [];
 
 function handle(message) {
   switch (message.command) {
@@ -12,12 +14,25 @@ function handle(message) {
       removeStock(message);
       break;
     }
+    case 'start': {
+      seriesData = message.data;
+      addAllStocks();
+      break;
+    }
     default :
     break;
   }
 }
 
-function addStock(message) {
+function addAllStocks() {
+  $.each(seriesData, function (i, item) {
+    console.log('Item:', item);
+    addStockCard({stock: item.name, command: ''});
+  });
+  chartingService.createChart(seriesData);
+}
+
+function addStockCard(message) {
   let template = $('#stock-template').html();
   const context = { 
     stock: message.stock,
@@ -26,6 +41,10 @@ function addStock(message) {
 
   template = Handlebars.compile(template);
   $("#content-placeholder").append(template(context));
+}
+
+function addStock(message) {
+  addStockCard(message);
 
   //charting.addStock(message);
 }
@@ -34,8 +53,13 @@ function removeStock(message) {
   const $elem = $('.card[data-stock="' + message.stock + '"]');
   if ($elem) {
     $elem.parent().remove();
-    //charting.removeStock(message.stock);
-
+    const index = seriesData.findIndex(function(item){
+      return item.name === message.stock;
+    });
+    if (index > -1) {
+      seriesData.splice(index, 1);
+    }
+    chartingService.createChart(seriesData);
   }
 }
 

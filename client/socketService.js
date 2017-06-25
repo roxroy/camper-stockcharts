@@ -1,4 +1,4 @@
-const socketCommands = require("./socketCommands");
+let socketCommands = require("./socketCommands");
 
 let wsUri = window.location.origin.replace(/^http/, 'ws');
 let websocket = null;

@@ -14,6 +14,32 @@ function getStockData(message) {
   });
 }
 
+function startupMessage (connection) {
+/*
+	seriesOptions[i] = {
+            name: name,
+            data: data
+        };
+*/
+	var seriesOptions = [
+		{
+			name : "APPL",
+			data :  [[1277683200000,30], [1278683200000,23], [1279683200000,31], [1280683200000,26] ],
+		},
+		{
+			name : "GOOG",
+			data :  [[1277683200000,50], [1278683200000,43], [1279683200000,51], [1280683200000,56] ],
+		},
+	];
+	let message = {
+		command : 'start',
+		data: seriesOptions,
+	}
+	if (connection) {
+      connection.send(JSON.stringify(message));
+	}
+};
+
 function broadcastMessage (connections, message) {
 	// rebroadcast command to all clients
 	if (connections) {
@@ -35,6 +61,10 @@ function handle (ws, connections, message) {
 		}
 		case 'remove': {
 			broadcastMessage(connections, message);
+			break;
+		}
+		case 'start': {
+			startupMessage(ws);
 			break;
 		}
 	}

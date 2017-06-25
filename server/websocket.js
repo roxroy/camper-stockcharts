@@ -15,6 +15,7 @@ function initialize(server){
 		var thisId = ++clientId;
 		console.log('Client #%d connected', thisId);
 		connections.push(ws);
+		socketCommands(ws, connections, {command: 'start'});
 
 		ws.on('message', function incoming(messageStr) {
 			var message = JSON.parse(messageStr);

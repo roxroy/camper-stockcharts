@@ -5,12 +5,10 @@ let seriesData = [];
 function handle(message) {
   switch (message.command) {
     case 'add': {
-      console.log('UI add handle:', message);
       addStock(message);
       break;
     }
     case 'remove': {
-      console.log('UI remove handle:', message);
       removeStock(message);
       break;
     }

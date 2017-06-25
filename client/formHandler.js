@@ -2,14 +2,14 @@ const socketService = require("./socketService");
 
 function setHandlers() {
   $('#btn-add').on('click', () => {
-    const stock = $('#addStock').val();
-    console.log(' formHandler addStock');
+    const $elm = $('#addStock');
+    const stock = $elm.val();
     socketService.sendAddCommand(stock);
+    $elm.val('');
   });
 
   $('#content-placeholder').on('click', '.stock-remove', (event) => {
     const stock = $(event.target).parent().closest('.card').data('stock');
-    console.log(' formHandler removeStock ' + stock);
     socketService.sendRemoveCommand(stock);
   });
 }

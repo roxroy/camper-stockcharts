@@ -46,7 +46,11 @@ function getData(stockParams) {
 
     getApiData(stockParams)
       .then((json) =>  {
-        resolve(saveData(json));
+        if (json.quandl_error || !json.dataset.hasOwnProperty('dataset_code')) {
+          reject('Invalid stock code.');
+        } else {
+          resolve(saveData(json));
+        }
       })
       .catch((err) => {
         console.error(err);

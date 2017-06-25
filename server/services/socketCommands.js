@@ -5,7 +5,7 @@ function getStockData(message) {
   const now = new Date(),
     endDate = now.toISOString().substring(0, 10),
     startDate = new Date(now.setFullYear( now.getFullYear() - 5 )).toISOString().substring(0, 10);
-  
+
   const stockParams = { symbol: message.stock, startDate, endDate};
 
   return new Promise(function(resolve, reject) {  
@@ -29,16 +29,21 @@ function startupMessage (connection, stocks) {
     command : 'start',
     data: stocks,
   }
+
   if (connection) {
       connection.send(JSON.stringify(message));
   }
 };
-
+ 
 function broadcastMessage (connections, message) {
   // rebroadcast command to all clients
   if (connections && connections.length>0) {
       connections.forEach(function(destination) {
-        destination.send(JSON.stringify(message));
+        try {
+          destination.send(JSON.stringify(message));
+        } catch(err) {
+            console.log('Websocket error: %s', err);
+        }       
       });
   }
 };
@@ -52,7 +57,6 @@ function handle (ws, connections, message) {
         _message.stock = _message.stock.toUpperCase();
         _message.data = data.trades;
         _message.description = data.description;
-        console.log*(_message);
         broadcastMessage(connections, _message);
       })
       .catch((err) => {

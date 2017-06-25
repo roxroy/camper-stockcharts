@@ -1,3 +1,4 @@
+const utils = require("./utils");
 let socketCommands = require("./socketCommands");
 
 let wsUri = window.location.origin.replace(/^http/, 'ws');
@@ -6,6 +7,16 @@ let websocket = null;
 function initialize() {
   websocket = new WebSocket(wsUri);
   websocket.onmessage = onMessage;
+  websocket.onerror = onError;
+  websocket.onclose = function (event) {
+   // Connection closed.
+   // Firstly, check the reason.  
+   if (event.code != 1000) {
+      if (!navigator.onLine) {
+         utils.showToast("You are offline. Please connect to the Internet and try again.");
+      }
+   }
+  }
 }
 
 function onMessage(event) {
@@ -13,19 +24,22 @@ function onMessage(event) {
   socketCommands.handle(message);
 }
 
+function onError(event) {
+  utils.showToast(err);    
+}
+
 function sendCommand(command, stock) {
   const message = {
     command,
-    stock,
+    stock, 
   };
-
-  if (websocket) {
+  if (websocket.readyState === 1) {
     websocket.send(JSON.stringify(message));
   } else {
-    console.log('Not connected');
+    utils.showToast('Refresh the page to connect to the server.');
   }
 } 
- 
+
 function sendAddCommand(stock) {
   sendCommand('add', stock);
 }

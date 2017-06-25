@@ -1,6 +1,6 @@
 var path = require('path');
 
-var dir_js = path.resolve(__dirname, 'public/js');
+//var dir_js = path.resolve(__dirname, 'client/\.js$/');
 //var dir_html = path.resolve(__dirname, 'html');
 var dir_build = path.resolve(__dirname, 'public/build');
 
@@ -10,11 +10,15 @@ module.exports = {
         path: dir_build,
         filename: 'bundle.js'
     },
+    resolve: {
+        extensions: ['.js'],
+    },
     module: {
         loaders: [
             {
                 loader: 'babel-loader',
-                test: dir_js,
+                test: /\.js$/,
+                //test: dir_js,
             }
         ]
     },

@@ -1,5 +1,7 @@
+import formHandler from './formHandler';
 import socketService from './socketService';
 
-$(document).ready(() => {
+$(document).ready(() => { 
 	  socketService.initialize();
+    formHandler();
 });

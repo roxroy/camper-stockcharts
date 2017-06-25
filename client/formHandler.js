@@ -1,4 +1,4 @@
-import socketCommands from './socketCommands';
+const socketCommands = require("./socketCommands");
 
 export default function() {
   $('#btn-add').on('click', () => {

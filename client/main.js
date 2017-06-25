@@ -1,5 +1,5 @@
-import formHandler from './formHandler';
-import socketService from './socketService';
+const formHandler = require("./formHandler");
+const socketService = require("./socketService");
 
 $(document).ready(() => { 
 	  socketService.initialize();

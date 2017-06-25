@@ -8,6 +8,19 @@ function getAllStocks(){
 	return Stock.find({}).exec();
 };
 
+function remove(symbol) {
+	if (symbol) {
+		Stock.findOne({ symbol: symbol }, function(err, symbol) {
+		  if (err) throw err;
+
+		 	symbol.remove(function(err) {
+		    if (err) throw err;
+		  });
+		});
+	}
+};
+
+
 function addNew(stockData){
 	let newStock = Stock({
 	  symbol: stockData.symbol,
@@ -25,4 +38,5 @@ module.exports = {
   addNew,
   getStockData,
   getAllStocks,
+  remove,
 }

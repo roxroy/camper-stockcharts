@@ -3,5 +3,5 @@ const socketService = require("./socketService");
 
 $(document).ready(() => { 
 	  socketService.initialize();
-    formHandler();
+    formHandler.setHandlers();
 });

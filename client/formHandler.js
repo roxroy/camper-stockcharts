@@ -1,6 +1,6 @@
 const socketCommands = require("./socketCommands");
 
-export default function() {
+function setHandlers() {
   $('#btn-add').on('click', () => {
     const stock = $('#addStock').val();
     console.log(' formHandler addStock');
@@ -13,3 +13,9 @@ export default function() {
     socketCommands.sendRemoveCommand(stock);
   });
 }
+
+module.exports = function() {
+  return  {
+    setHandlers,
+  }
+}();

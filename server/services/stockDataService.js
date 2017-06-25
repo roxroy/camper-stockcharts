@@ -25,6 +25,7 @@ function getApiData(params) {
 }
 
 function getParsedFields(json) {
+  let history = [];
   const symbol = json.dataset.dataset_code,
       description = json.dataset.name,
       tradeDates = {
@@ -32,14 +33,16 @@ function getParsedFields(json) {
         endDate : json.dataset.end_date,
       },
       tradeHistory = json.dataset.data.map( (item) =>{
-        return { date: item[0], open: item[1]};
+        return [ new Date(item[0]).getTime(), item[1] ];
       });
 
   return { symbol, description, tradeDates, tradeHistory };
 }
 
 function saveData(json) {
-  storageService.addNew(getParsedFields(json));
+  const parsedData = getParsedFields(json);
+  storageService.addNew(parsedData);
+  return parsedData;
 }
 
 function adjustDates(stockParams) {
@@ -57,8 +60,7 @@ function getData(stockParams) {
 
     getApiData(stockParams)
       .then((json) =>  {
-        saveData(json);
-        resolve(json);
+        resolve(saveData(json));
       })
       .catch((err) => {
         console.error(err);

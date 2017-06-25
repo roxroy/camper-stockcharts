@@ -45,8 +45,8 @@ function addStockCard(message) {
 
 function addStock(message) {
   addStockCard(message);
-
-  //charting.addStock(message);
+  seriesData.push({ name: message.stock, data: message.data });
+  chartingService.createChart(seriesData);
 }
 
 function removeStock(message) {

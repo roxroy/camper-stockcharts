@@ -5,6 +5,7 @@ function getDateRange(symbol){
 };
 
 function getStockData(symbol){
+	return Stock.findOne({ symbol: symbol }).exec();
 };
 
 function addNew(stockData){
@@ -24,4 +25,5 @@ function addNew(stockData){
 module.exports = {
   addNew,
   getDateRange,
+  getStockData,
 }

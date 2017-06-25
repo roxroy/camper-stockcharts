@@ -5,5 +5,4 @@ const chartingService = require("./chartingService");
 $(document).ready(() => { 
 	  socketService.initialize();
     formHandler.setHandlers();
-    chartingService.plotChart();
 });

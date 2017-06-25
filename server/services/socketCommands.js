@@ -2,9 +2,8 @@ const stockDataService = require('./stockDataService');
 const storageService = require('./storageService');
 
 function getStockData(message) {
-  const stockParams = { symbol: message.stock, startDate: '2017-01-01', endDate: '2017-01-10' };
-  // if stock in db then get it
-  // otherwise  got to api
+  const stockParams = { symbol: message.stock, startDate: '2017-05-01', endDate: '2017-06-25' };
+
   return new Promise(function(resolve, reject) {  
     storageService.getDateRange(message.stock)
     .then(function(tradeData) {
@@ -18,44 +17,20 @@ function getStockData(message) {
           reject(err);
         });        
       } else {
-        reject('');
+        stockDataService.getData(stockParams)
+        .then(function(stockdata) {
+           resolve(stockdata);
+        });
       }
     });
   });
-/*
-
-    if (tradeData && tradeData.symbol) {
-        return new Promise(function(resolve, reject) {  
-          storageService.getStockData(message.stock)
-          .then(function(stockdata) {
-            resolve(stockdata);
-          });
-        });
-    } else {
-        return new Promise(function(resolve, reject) {  
-          stockDataService.getData(stockParams)
-          .then(function(stockdata) {
-            resolve(stockdata);
-          });
-        });
-    }
- */ 
 }
 
-function startupMessage (connection) {
-  var seriesOptions = [
-    {
-      name : "APPL1",
-      data :  [[1277683200000.0,30], [1278683200000.0,23], [1279683200000,31], [1280683200000,26] ],
-    },
-    {
-      name : "GOOG1",
-      data :  [[1277683200000,50], [1278683200000,43], [1279683200000,51], [1280683200000,56] ],
-    },
-  ];
+function startupMessage (connection, stocks) {
+
   let message = {
     command : 'start',
-    data: seriesOptions,
+    data: stocks,
   }
   if (connection) {
       connection.send(JSON.stringify(message));
@@ -77,7 +52,8 @@ function handle (ws, connections, message) {
       getStockData(message)
       .then(function(data) {
         const _message = message;
-        _message.data = data.tradeHistory;
+        _message.data = data.trades;
+        _message.description = data.description;
         console.log*(_message);
         broadcastMessage(connections, _message);
       })
@@ -92,7 +68,14 @@ function handle (ws, connections, message) {
       break;
     }
     case 'start': {
-      startupMessage(ws);
+      storageService.getAllStocks()
+      .then(function(stocks) {
+        startupMessage(ws, stocks);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
       break;
     }
   }

@@ -15,8 +15,7 @@ function handle(message) {
       break;
     }
     case 'start': {
-      seriesData = message.data;
-      addAllStocks();
+      addAllStocks(message.data);
       break;
     }
     default :
@@ -24,10 +23,11 @@ function handle(message) {
   }
 }
 
-function addAllStocks() {
-  $.each(seriesData, function (i, item) {
-    console.log('Item:', item);
-    addStockCard({stock: item.name, command: ''});
+function addAllStocks(messageData) {
+  seriesData = [];
+  $.each(messageData, function (i, item) {
+    addStockCard({ stock: item.symbol, description: item.description } );
+    seriesData.push({ name: item.symbol, data: item.trades });
   });
   chartingService.createChart(seriesData);
 }
@@ -36,7 +36,7 @@ function addStockCard(message) {
   let template = $('#stock-template').html();
   const context = { 
     stock: message.stock,
-    description: message.command + '. More data',
+    description: message.description,
   };
 
   template = Handlebars.compile(template);

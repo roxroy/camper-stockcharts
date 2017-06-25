@@ -28,31 +28,17 @@ function getParsedFields(json) {
   let history = [];
   const symbol = json.dataset.dataset_code,
       description = json.dataset.name,
-      tradeDates = {
-        startDate : json.dataset.start_date,
-        endDate : json.dataset.end_date,
-      },
-      tradeHistory = json.dataset.data.map( (item) =>{
+      trades = json.dataset.data.map( (item) =>{
         return [ new Date(item[0]).getTime(), item[1] ];
       });
 
-  return { symbol, description, tradeDates, tradeHistory };
+  return { symbol, description, trades };
 }
 
 function saveData(json) {
   const parsedData = getParsedFields(json);
   storageService.addNew(parsedData);
   return parsedData;
-}
-
-function adjustDates(stockParams) {
-  // get the date for the stock. If endDate < stockEndDate => start=stockEnd,end(remain the same) 
-  storageService.getDateRange(stockParams.symbol)
-  .then(function(dates) {
-    console.log('getDateRange: ', dates);
-    const newStart = dates.tradeDates.endDate;
-    const newEnd = stockParams.endDate;
-  });
 }
 
 function getData(stockParams) {
@@ -67,10 +53,6 @@ function getData(stockParams) {
         reject(err);
       });
   });
-}
-
-function process(options) {
-  const stockParams = { symbol: options.symbol, startDate: '2017-01-01', endDate: '2017-01-10' };
 }
 
 module.exports = {

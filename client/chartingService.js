@@ -1,7 +1,4 @@
-/**
- * Create the chart when all data is loaded
- * @returns {undefined}
- */
+
 function createChart(seriesOptions) {
 
     Highcharts.stockChart('visualisation', {
@@ -40,34 +37,8 @@ function createChart(seriesOptions) {
     });
 }
 
-function plotChart() {
-    var seriesCounter = 0,
-        names = ['MSFT', 'AAPL', 'GOOG'];
-    var seriesOptions = [];
-    $.each(names, function (i, name) {
-
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=' + name.toLowerCase() + '-c.json&callback=?',    function (data) {
-
-            seriesOptions[i] = {
-                name: name,
-                data: data
-            };
-            console.log(seriesOptions[i]);
-
-            // As we're loading the data asynchronously, we don't know what order it will arrive. So
-            // we keep a counter and create the chart when all the data is loaded.
-            seriesCounter += 1;
-
-            if (seriesCounter === names.length) {
-                createChart();
-            }
-        });
-    });
-}
-
 module.exports = function() {
   return  {
     createChart,
-    plotChart,
   }
 }();

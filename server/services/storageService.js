@@ -1,19 +1,27 @@
 let Stock = require('../models/stock');
 
+function getDateRange(symbol){
+	return Stock.findOne({ symbol: symbol }, 'symbol tradeDates').exec();
+};
+
+function getStockData(symbol){
+};
+
 function addNew(stockData){
-	let newStcok = Stock({
+	let newStock = Stock({
 	  symbol: stockData.symbol,
 	  description: stockData.description,
 	  tradeDates: stockData.tradeDates,
 	  tradeHistory: stockData.tradeHistory,
 	});
 
-	newStcok.save(function(err, resource) {
+	newStock.save(function(err, resource) {
 	  if (err) throw err;
 	  console.log('Stock created!', stockData.symbol);
 	});
 };
 
 module.exports = {
-  addNew
+  addNew,
+  getDateRange,
 }

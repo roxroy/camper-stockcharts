@@ -1,7 +1,7 @@
 const https = require('https');
 const storageService = require('./storageService');
 
-function getData(params) {
+function getApiData(params) {
   return new Promise((resolve, reject) => {
 
     const path = `/api/v3/datasets/WIKI/${params.symbol}.json?start_date=${params.startDate}&end_date=${params.endDate}&order=asc`;
@@ -34,7 +34,7 @@ function getParsedFields(json) {
       tradeHistory = json.dataset.data.map( (item) =>{
         return { date: item[0], open: item[1]};
       });
-  console.log('getParsedFields', symbol, description, tradeDates, tradeHistory);
+
   return { symbol, description, tradeDates, tradeHistory };
 }
 
@@ -42,12 +42,35 @@ function saveData(json) {
   storageService.addNew(getParsedFields(json));
 }
 
-function process() {
-  getData({symbol: 'AAPL', startDate: '2017-01-01', endDate: '2017-01-10'})
-    .then((json) =>  saveData(json))
-    .catch((err) => console.error(err));
+function adjustDates(stockParams) {
+  // get the date for the stock. If endDate < stockEndDate => start=stockEnd,end(remain the same) 
+  storageService.getDateRange(stockParams.symbol)
+  .then(function(dates) {
+    console.log('getDateRange: ', dates);
+    const newStart = dates.tradeDates.endDate;
+    const newEnd = stockParams.endDate;
+  });
+}
+
+function getData(stockParams) {
+  return new Promise((resolve, reject) => {
+
+    getApiData(stockParams)
+      .then((json) =>  {
+        saveData(json);
+        resolve(json);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
+  });
+}
+
+function process(options) {
+  const stockParams = { symbol: options.symbol, startDate: '2017-01-01', endDate: '2017-01-10' };
 }
 
 module.exports = {
-  process
+  getData
 }

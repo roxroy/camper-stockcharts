@@ -3,6 +3,9 @@ data
 
 #env file
 env.js
+y
+y.*
+.env
 
 # Dependency directories
 node_modules

@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "bundle": "webpack --watch",
     "heroku-build": "webpack",
-    "heroku-postbuild": "cd client/ && npm install && cd .. && npm install && npm run heroku-build"
+    "heroku-postbuild": "npm install && npm run heroku-build"
   },
   "cacheDirectories": [
     "node_modules",
@@ -28,12 +28,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "ejs": "^2.5.6",
-    "express": "^4.15.2",
-    "mongoose": "^4.10.2",
-    "ws": "^2.3.1"
-  },
-  "devDependencies": {
+    "babel-cli": "6.14.0",
+    "babel-core": "6.14.0",
+    "babel-cli": "6.14.0",
     "babel-core": "^6.24.1",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.4.1",
@@ -43,9 +40,14 @@
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-import": "^2.2.0",
-    "nodemon": "^1.11.0",
-    "webpack": "^1.12.6",
-    "webpack-dev-server": "^1.12.1"
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "mongoose": "^4.10.2",
+    "webpack": "^2.6.1",
+    "ws": "^2.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   },
   "babel": {
     "presets": [

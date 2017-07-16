@@ -1,7 +1,7 @@
 {
   "name": "camper-stockcharts",
   "version": "1.0.0",
-  "description": "Chart the Stock Market",
+  "description": "Web application to visualize stock market prices within a specific time period.",
   "engines": {
     "node": "6.9.x"
   },
